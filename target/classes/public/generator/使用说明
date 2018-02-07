@@ -1,0 +1,16 @@
+eclipse下run configurations;
+选择本项目:
+命令1:mybatis-generator:generate
+
+建表时，字段名称建议用"_"分隔多个单词，比如:AWB_NO、REC_ID...，
+这样生成的model类，属性名称就会变成漂亮的驼峰命名，即：awbNo、recId
+
+配置详解
+http://www.jianshu.com/p/e09d2370b796
+
+更完整的配置参见源码org.mybatis.generator.config.PropertyRegistry.class
+<dependency>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-core</artifactId>
+    <version>1.3.2</version>
+</dependency>
