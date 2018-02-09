@@ -36,6 +36,7 @@
 		</javaClientGenerator>
 
 		<!-- 表的配置,建议每个配置,并且生成过后注释掉,防止覆写,特殊的必须ColumOverride,保证生成的domain按照驼峰命名法命名 -->
-		<table tableName="test" domainObjectName="Test"></table>
+		<table tableName="permission" domainObjectName="Permission"></table>
+		<table tableName="role" domainObjectName="Role"></table>
 	</context>
 </generatorConfiguration>

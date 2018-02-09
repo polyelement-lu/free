@@ -1,15 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.free.mapper.UserMapper" >
+  <!-- 用户 -->
   <resultMap id="BaseResultMap" type="com.free.model.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="login_name" property="login_name" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="cellphone" property="cellphone" jdbcType="INTEGER" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="islock" property="islock" jdbcType="INTEGER" />
+    <result column="create_on" property="createOn" jdbcType="TIMESTAMP" />
+    <result column="last_update_on" property="lastUpdateOn" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="LONGVARCHAR" />
   </resultMap>
-  <select id="getUserInfo" resultType="map">
-  	select * from user
+  
+  <!-- 角色 -->
+  <resultMap id="RoleResultMap" type="com.free.model.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 权限 -->
+  <resultMap id="PermResultMap" type="com.free.model.Permission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getUserByLoginName" resultMap="BaseResultMap" parameterType="string">
+  	select * from user where login_name=#{0}
+  </select>
+  
+  <select id="doUserLogin" resultMap="BaseResultMap" parameterType="string">
+  	select * from user where login_name=#{loginName} and password=#{password}
+  </select>
+  
+  <select id="getRoleByUserId" resultMap="RoleResultMap" parameterType="int">
+  	SELECT a.* from role a RIGHT JOIN user_role b on a.id=b.role_id where b.user_id=#{0}
+  </select>
+  
+  <select id="getPermissionByUserId" resultMap="PermResultMap" parameterType="int">
+	  	SELECT
+		c.id,
+		c.`code`,
+		c.`name`
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				role_permission a
+			LEFT JOIN permission b ON b.id = a.permission_id
+		) c
+	LEFT JOIN (
+		SELECT
+			*
+		FROM
+			role a
+		RIGHT JOIN user_role b ON a.id = b.role_id
+	) d ON c.role_id = d.role_id
+	WHERE
+		d.user_id = #{0}
   </select>
 </mapper>

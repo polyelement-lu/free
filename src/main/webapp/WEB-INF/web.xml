@@ -3,7 +3,7 @@
     xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     id="WebApp_ID" version="2.5">
-    <display-name>Archetype Created Web Application</display-name>
+    <display-name>ldm-polyelement Application</display-name>
     <!-- 连接池 启用 Web 监控统计功能    start-->  
     <!-- <filter>  
        <filter-name>DruidWebStatFilter </filter-name>  
@@ -32,15 +32,16 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-	<listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-
-    <!-- 读取spring配置文件 -->
+	<!-- 读取spring配置文件 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:application.xml</param-value>
     </context-param>
+
+	<!-- spring监听器，监听springMvc环境 -->
+	<listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <!-- Spring字符集过滤器 -->
     <filter>
@@ -70,7 +71,26 @@
             <param-value>classpath:spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet>		
+	<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求 -->  
+    <!-- 通常将这段代码中的filter-mapping放在所有filter-mapping之前，以达到shiro是第一个对web请求进行拦截过滤之目的。
+    	这里的fileter-name(shiroFilter) 对应下面applicationContext.xml中的<bean id="shiroFilter" /> 
+    	DelegatingFilterProxy会自动到Spring容器中查找名字为shiroFilter的bean并把filter请求交给它处理-->  
+    <!-- 使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤 -->  
+    <filter>  
+        <filter-name>shiroFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
+        <init-param>  
+			<!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理   -->
+            <param-name>targetFilterLifecycle</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>shiroFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+    
     <!-- 拦截设置 -->
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
