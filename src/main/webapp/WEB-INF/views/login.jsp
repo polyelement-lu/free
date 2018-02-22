@@ -6,12 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- ${pageContext.request.contextPath}:绝对路径 -->
 <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resource/favicon.png" media="screen"/>
-<!--[if lt IE 9]>
-<script type="text/javascript" src="js/html5.js"></script>
-<script type="text/javascript" src="js/respond.min.js"></script>
-<script type="text/javascript" src="js/PIE_IE678.js"></script>
-<![endif]-->
-
 <link href="${pageContext.request.contextPath}/resource/css/H-ui.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resource/css/H-ui.login.css" rel="stylesheet" type="text/css" />
 
