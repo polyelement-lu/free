@@ -33,7 +33,6 @@ public class LoginController extends BaseController{
 
 	@RequestMapping("login")
 	public String login(HttpServletRequest request){
-		
 		return "login";
 	}
 	
