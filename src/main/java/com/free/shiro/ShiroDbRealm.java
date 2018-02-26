@@ -41,7 +41,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		String loginName = (String)super.getAvailablePrincipal(principals);
 		User userByLogin = userService.getUserByLoginName(loginName);
 		if(userByLogin == null){
-			throw new AuthenticationException("msg:用户不存在。");
+			throw new AuthenticationException("用户不存在！");
 		}
 		SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
 		List<Role> roleByUserId = userService.getRoleByUserId(userByLogin.getId());
@@ -77,20 +77,21 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		Session session = getSession();
 		String code = (String)session.getAttribute(Constants.VALIDATE_CODE);
 		if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)){
-			throw new AuthenticationException("msg:验证码错误, 请重试.");
+			throw new AuthenticationException("验证码错误，请重试！");
 		}
 		
 		User user = userService.getUserByLoginName(token.getUsername());
 		if(user != null){
 			if(user.getIslock() !=null && user.getIslock() == 1){
-				throw new AuthenticationException("msg:该已帐号禁止登录。");
+				throw new AuthenticationException("该帐号已被禁用！");
 			}
 			AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), this.getName());
 			// 将用户放到session里面
 			this.setSession("currentUser", user.getLoginName());
 			return authcInfo;
-		}
-		return null;
+		}else{
+			throw new AuthenticationException("【用户】或【密码】错误，请重试！");
+		}	
 	}
 	
 	/**

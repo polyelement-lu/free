@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+.layui-nav>li>dl>dd>a>.ace-icon {
+    margin-right: 6px;
+    font-size: 120%;
+}
+.layui-nav-tree>li>dl>dd>a {
+    margin-left: 29px;
+}
+.layui-nav-tree>li>a>.menu-icon {
+	display: inline-block;
+    min-width: 30px;
+    vertical-align: sub;
+    font-size: 18px;
+    font-weight: 400;
+}
